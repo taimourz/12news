@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import  Header  from './components/Header/Header.jsx'
 import  Footer  from './components/Footer/Footer.jsx'
+import  Frontpage from './components/Frontpage/Frontpage.jsx'
 
 
 
@@ -8,7 +9,7 @@ function App() {
   const [archive, setArchive] = useState(null)
   const [isLoadingArchive, setIsLoadingArchive] = useState(true)
   const [archiveError, setArchiveError] = useState(null)
-  const [showMore, setShowMore] = useState(false)
+  
 
   useEffect(() => {
     const loadArchive = async () => {
@@ -36,7 +37,7 @@ function App() {
   const sections = archive?.sections ?? {}
 
   const frontPageArticles = sections['front-page'] ?? []
-  const heroArticle = frontPageArticles[0]
+  const heroArticle = frontPageArticles[0] ?? null;
   const relatedFrontPage = frontPageArticles.slice(1, 4)
 
   const mustReadStories = (sections.national ?? []).slice(0, 3)
@@ -61,50 +62,11 @@ function App() {
 
 
       <main>
-        <article className="mainOne">
-          <p className="section-label">Front Page</p>
-          {heroArticle ? (
-            <>
-              <h2>{heroArticle.title}</h2>
-              {heroArticle.imageUrl && (
-                <img src={heroArticle.imageUrl} alt={heroArticle.title} width="300" />
-              )}
-              {relatedFrontPage.length > 0 && (
-                <>
-                  <p>More from the front page</p>
-                  <ul>
-                    {relatedFrontPage.map((story) => (
-                      <li key={story.title}>
-                        <a href={story.url} target="_blank" rel="noreferrer">
-                          {story.title}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
-              {heroArticle.summary && (
-                <p>
-                  {showMore ? heroArticle.summary : `${heroArticle.summary.slice(0, 160)}...`}
-                  {heroArticle.summary.length > 160 && (
-                    <button
-                      type="button"
-                      className="link-button"
-                      onClick={() => setShowMore((prev) => !prev)}
-                    >
-                      {showMore ? 'read less' : 'read more'}
-                    </button>
-                  )}
-                  <a className="link-button" href={heroArticle.url} target="_blank" rel="noreferrer">
-                    Read full story ↗
-                  </a>
-                </p>
-              )}
-            </>
-          ) : (
-            <p className="status-message">No front-page articles available.</p>
-          )}
-        </article>
+
+      <Frontpage 
+        heroArticle={heroArticle}
+        relatedFrontPage={relatedFrontPage}
+      />
 
         <aside className="mainTwo">
           <p className="section-label">National Highlights</p>
