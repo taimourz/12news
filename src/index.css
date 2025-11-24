@@ -26,68 +26,6 @@ a {
   width: 100%;
 }
 
-.navbar {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.navbar .links {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #000;
-  list-style: none;
-  flex-wrap: wrap;
-  padding: 5px 10px;
-  gap: 10px;
-}
-
-.navbar .links li a {
-  color: #9fa6b2;
-  font-size: 13px;
-}
-
-.navbar .brand {
-  margin: 15px;
-  text-align: center;
-}
-
-.navbar .brand p {
-  margin-top: 10px;
-}
-
-.navbar .otherLinks {
-  display: flex;
-  list-style: none;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 7px;
-  border-top: 2px solid #000;
-}
-
-.navbar .otherLinks li a {
-  padding: 10px;
-  font-size: 13px;
-}
-
-.navbar a:hover {
-  background-color: #e5e7eb;
-}
-
-.status-bar {
-  padding: 15px 10px 0;
-  text-align: center;
-}
-
-.status-message {
-  font-size: 14px;
-  color: #374151;
-}
-
-.status-error {
-  color: #b91c1c;
-}
-
 .section-label {
   font-size: 13px;
   letter-spacing: 0.15em;
