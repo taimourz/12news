@@ -27,7 +27,7 @@ export default function Footer(){
     return(
         <div>
         <footer>
-            <img src="/images/footerlogo.png" alt="Dawn footer logo" width="100" />
+            <img src={`${import.meta.env.BASE_URL}images/footerlogo.png`} alt="Dawn footer logo" height="50" width="225" />
             <div className="footerlinks">
             {footerColumns.map((column, index) => (
                 <div key={index}>

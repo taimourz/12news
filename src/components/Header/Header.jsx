@@ -49,7 +49,7 @@ export default function Header({isLoadingArchive, archiveError, archiveDate }){
             ))}
             </ul>
             <div className="brand">
-            <img src="/images/logo.png" alt="Dawn logo" height="50" width="225" />
+            <img src={`${import.meta.env.BASE_URL}images/logo.png`} alt="Dawn logo" height="50" width="225" />
             <p>
                 <b>EPAPER </b>
                 <span>| September 09, 2025</span>
