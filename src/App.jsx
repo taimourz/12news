@@ -10,7 +10,6 @@ function App() {
   const [archiveError, setArchiveError] = useState(null)
 
   const API_KEY = import.meta.env.VITE_TAIMOUR_API_KEY;
-  console.log("API_KEY:", API_KEY);
 
   useEffect(() => {
     const loadArchive = async () => {
