@@ -15,6 +15,7 @@ function App() {
     const loadArchive = async () => {
       try {
         const response = await fetch('https://taimourz-dawnnews12yearsago.hf.space/api/today', {
+        // const response = await fetch('http://localhost:8000/api/today', {          
           headers: {
             'Cache-Control': 'no-cache',
             'x-api-key': API_KEY
@@ -44,6 +45,14 @@ function App() {
   const buzzStories = sections['business'] ?? []
   const backPageStories = sections['back-page'] ?? []
   const editorialStories = sections['editorial'] ?? []
+  const sportStories = sections['sport'] ?? []
+  const otherVoicesStories = sections['other-voices'] ?? []
+  const letterStories = sections['letters'] ?? []
+  const booksStories = sections['books-authors'] ?? []
+  const bfinanceStories = sections['business-finance'] ?? []
+  const youngWorldStories = sections['young-world'] ?? []
+  const sundayMagzineStories = sections['sunday-magzine'] ?? []
+  const iconStories = sections['icon'] ?? []
 
   return (
     <div className="app-shell">
@@ -73,6 +82,38 @@ function App() {
         <NewsCard
           newsStories={editorialStories}
           storyType="Editorial"
+        />
+        <NewsCard
+          newsStories={sportStories}
+          storyType="Sports"
+        />
+        <NewsCard
+          newsStories={otherVoicesStories}
+          storyType="Other Voices Stories"
+        />
+        <NewsCard
+          newsStories={letterStories}
+          storyType="Letters to the Editor"
+        />
+        <NewsCard
+          newsStories={booksStories}
+          storyType="Books"
+        />
+        <NewsCard
+          newsStories={bfinanceStories}
+          storyType="Business Finance"
+        />
+        <NewsCard
+          newsStories={youngWorldStories}
+          storyType="Young World Sports"
+        />
+        <NewsCard
+          newsStories={sundayMagzineStories}
+          storyType="Sunday Magzine"
+        />
+        <NewsCard
+          newsStories={iconStories}
+          storyType="Icon"
         />
       </main>
       <Footer/>
