@@ -1,4 +1,5 @@
 import "./Header.css"
+import { useData } from '../../context/DataContext.jsx';
 
 const topNavLinks = [
   'EPAPER',
@@ -37,7 +38,15 @@ const secondaryNavLinks = [
 
 
 
-export default function Header({isLoadingArchive, archiveError, archiveDate }){
+export default function Header(){
+     const { isLoadingArchive } = useData();
+     const { archiveDate } = useData();
+     const { archiveError } = useData();
+
+    
+    console.log("Loading:", isLoadingArchive);
+    console.log("Error:", archiveError);     
+
     return(
         <div>
         <nav className="navbar">
