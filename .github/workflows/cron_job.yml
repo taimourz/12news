@@ -8,7 +8,7 @@ on:
         required: false
         default: ''
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 19 * * *"
 
 jobs:
   call-api:
@@ -21,10 +21,10 @@ jobs:
         id: set_url
         run: |
           if [ -z "${{ github.event.inputs.target_date }}" ]; then
-            URL="https://taimourz-dawnnews12yearsago.hf.space/api/today"
+            URL="https://taimourz-dawnnews.hf.space/api/v1/archive/today"
           else
             DATE="${{ github.event.inputs.target_date }}"
-            URL="https://taimourz-dawnnews12yearsago.hf.space/api/date/$DATE"
+            URL="https://taimourz-dawnnews.hf.space/api/v1/archive/$DATE"
           fi
           echo "API_URL=$URL" >> $GITHUB_ENV
 
