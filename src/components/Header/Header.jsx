@@ -33,35 +33,34 @@ const secondaryNavLinks = [
   { label: 'BUSINESS FINANCE', path: '/business-finance', sectionKey: 'business-finance' },
 ]
 
-function twelveYearsAgoPakistan() {
-  const now = new Date()
-  const pkNow = new Date(
-    new Intl.DateTimeFormat('en-CA', {
-      timeZone: 'Asia/Karachi',
+function formatArchiveDate(dateString) {
+  if (!dateString) return '';
+  try {
+    const date = new Date(dateString + 'T00:00:00');
+    return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
-      month: '2-digit',
+      month: 'long',
       day: '2-digit',
-    }).format(now)
-  )
-  pkNow.setFullYear(pkNow.getFullYear() - 12)
-  return new Intl.DateTimeFormat('en-US', {
-    timeZone: 'Asia/Karachi',
-    year: 'numeric',
-    month: 'long',
-    day: '2-digit',
-  }).format(pkNow)
+    }).format(date);
+  } catch (e) {
+    console.error('Error formatting date:', e);
+    return dateString;
+  }
 }
 
 export default function Header(){
-  const { isLoadingArchive, archiveDate, archiveError, sections } = useData();
+  const { isLoadingArchive, archiveDate, archiveError, sections, isFallbackData } = useData();
+   
     
   console.log("Loading:", isLoadingArchive);
   console.log("Error:", archiveError);
+  console.log("Archive Date:", archiveDate);
   
   const availableLinks = secondaryNavLinks.filter(link => {
     const stories = sections[link.sectionKey];
     return stories && stories.length > 0;
   });
+  const formattedDate = formatArchiveDate(archiveDate);
   
   return(
     <div>
@@ -79,7 +78,7 @@ export default function Header(){
           </Link>
           <p>
             <b>EPAPER </b>
-            <span>| {twelveYearsAgoPakistan()}</span>
+            <span>| {formattedDate || 'Loading...'}</span>
           </p>
         </div>
         <ul className="otherLinks">
@@ -95,13 +94,21 @@ export default function Header(){
         </ul>
       </nav>
       <section className="status-bar">
-        {isLoadingArchive && <p className="status-message">Loading archive&hellip;</p>}
-        {archiveError && <p className="status-message status-error">{archiveError}</p>}
-        {!isLoadingArchive && !archiveError && archiveDate && (
-          <p className="status-message">
-            Showing Dawn archive for <strong>{archiveDate}</strong>
-          </p>
-        )}
+        {isLoadingArchive ? (
+          <p className="status-message">Loading archive&hellip;</p>
+        ) : archiveError ? (
+          <p className="status-message status-error">{archiveError}</p>
+        ) : archiveDate ? (
+          isFallbackData ? (
+            <p className="status-message">
+              Showing Dawn archive for <strong>{formattedDate}</strong> ( fallback data - scraping is currently disabled )
+            </p>
+          ) : (
+            <p className="status-message">
+              Showing Dawn archive for <strong>{formattedDate}</strong>
+            </p>
+          )
+        ) : null}
       </section>
     </div>
   )

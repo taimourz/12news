@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from pathlib import Path
+import json
 from fastapi import APIRouter, Depends, BackgroundTasks, HTTPException
 from app.services.scraper import ScraperService
 from app.models.archive import DayArchive
@@ -7,6 +8,25 @@ from app.dependencies import get_scraper_service
 from app.core.security import validate_api_key
 
 router = APIRouter(prefix="/archive", tags=["archive"])
+
+def load_fallback_data() -> DayArchive:
+    fallback_path = Path("fallback_data/fallback.json")
+    
+    if not fallback_path.exists():
+        raise HTTPException(
+            status_code=503,
+            detail="No data available and fallback file not found"
+        )
+    
+    try:
+        with open(fallback_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        return DayArchive(**data)
+    except Exception as e:
+        raise HTTPException(
+            status_code=503,
+            detail=f"Failed to load fallback data: {str(e)}"
+        )
 
 @router.get("/today", response_model=DayArchive)
 async def get_today(
@@ -23,10 +43,14 @@ async def get_today(
     archive = await scraper.load_archive(today)
     
     if not archive:
-        raise HTTPException(
-            status_code=404, 
-            detail=f"No data for today ({today})"
-        )
+        print(f"No data for today ({today}), loading fallback data")
+        try:
+            archive = load_fallback_data()
+        except HTTPException:
+            raise HTTPException(
+                status_code=404, 
+                detail=f"No data for today ({today}) and no fallback available"
+            )
     
     background_tasks.add_task(scraper.ensure_tomorrow_exists)
     return archive

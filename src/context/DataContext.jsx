@@ -6,14 +6,14 @@ export function DataProvider({ children }) {
   const [archive, setArchive] = useState(null)
   const [isLoadingArchive, setIsLoadingArchive] = useState(true)
   const [archiveError, setArchiveError] = useState(null)
-
+  const [isFallbackData, setIsFallbackData] = useState(false)  
   const API_KEY = import.meta.env.VITE_TAIMOUR_API_KEY;  
 
   useEffect(() => {
   const loadArchive = async () => {
       try {
       const response = await fetch('https://taimourz-dawnnews.hf.space/api/v1/archive/today', {
-      // const response = await fetch('http://localhost:8000/api/v1/archive/today', {          
+      // const response = await fetch('http://localhost:8003/api/v1/archive/today', {
           headers: {
           'Cache-Control': 'no-cache',
           'x-api-key': API_KEY
@@ -23,8 +23,9 @@ export function DataProvider({ children }) {
       if (!response.ok) {
           throw new Error('Unable to load archive data')
       }
-
       const payload = await response.json()
+      const isFallback = payload.date === "2013-12-28"
+      setIsFallbackData(isFallback)
       setArchive(payload)
       } catch (err) {
       setArchiveError(err.message)
@@ -32,11 +33,10 @@ export function DataProvider({ children }) {
       setIsLoadingArchive(false)
       }
   }
-
   loadArchive()
   }, [])  
     const sections = archive?.sections || {};
-
+    const archiveDate = archive?.date || null;
     const getFrontPageStories = () => sections["front-page"] || [];
     const getNationalStories = () => sections["national"] || [];
     const getBackPageStories = () => sections["back-page"] || [];
@@ -51,13 +51,13 @@ export function DataProvider({ children }) {
     const getInternationalStories = () => sections["international"] || [];  
     const getYoungWorldStories = () => sections["young-world"] || [];  
     const getIconStories = () => sections["icon"] || [];      
-
-
   return (
     <DataContext.Provider value={{
             sections,
             isLoadingArchive,
             archiveError,
+            archiveDate,
+            isFallbackData,
             getFrontPageStories,
             getNationalStories,
             getBackPageStories,
@@ -77,7 +77,6 @@ export function DataProvider({ children }) {
     </DataContext.Provider>
   );
 }
-
 export function useData() {
   const context = useContext(DataContext);
   if (!context) {
