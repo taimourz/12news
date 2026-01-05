@@ -10,4 +10,11 @@ export default defineConfig(({ mode }) => ({
       },
     }),
   ],
+  server: {
+    host: true,
+    allowedHosts: true,
+  },
+  preview: {
+    allowedHosts: true,
+  },
 }))
