@@ -36,7 +36,10 @@ jobs:
         env:
           VITE_TAIMOUR_API_KEY: ${{ secrets.VITE_TAIMOUR_API_KEY }}      
         run: pnpm run build
-        
+
+      - name: Add CNAME for custom domain
+        run: echo "dawn.taimourafzal.xyz" > ./dist/CNAME
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
         
